@@ -12,7 +12,6 @@ The next time the user starts the app, he is asked to send the crash data to the
 ## Supported Platforms
 As of now we support Unity WP8 builds, but we plan to add support for other Windows platforms soon.
 
-This is an alpha version. Please report any bugs/feature requests as Github tickets. Thanks!
 
 ## Features & Installation
 
@@ -25,9 +24,11 @@ This is an alpha version. Please report any bugs/feature requests as Github tick
 5. Add a ScriptComponent to the GameObject. Choose HockeyAppWP8Script
 6. in the component view add your HockeyApp AppID and tick the relevant boxes.
 7. Build your project for Windows Phone 8 in the Unity Editor
+8. In the created Solution check the box for ID_CAP_WEBBROWSERCOMPONENT in the WMAppManifest.xml under capabilities (needed to display releasenotes for app updates)
 
-Have a look at the sample project in the ExampleProject folder.
+In the ExampleProject folder you can see an example project.
 
 ## Support
+This is currently an alpha version. Please report any bugs/feature requests as Github tickets. Thanks!
 
 If you have any questions, problems or suggestions, please contact us at [support@hockeyapp.net](mailto:support@hockeyapp.net).

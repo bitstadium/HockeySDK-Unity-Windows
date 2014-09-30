@@ -44,55 +44,68 @@ namespace HockeyAppUnity
         }
 
  #if (UNITY_WP8 && !UNITY_EDITOR)
-        public async void HandleCrashes(bool sendAutomatically = false) {
+        public void SendCrashes(bool sendAutomatically = false) {
  #else
-        public void HandleCrashes(bool sendAutomatically = false) {
+        public void SendCrashes(bool sendAutomatically = false) {
  #endif
  #if (UNITY_WP8 && !UNITY_EDITOR)
-            await (Task)_wp8Extensions.GetMethod("HandleCrashesAsync").Invoke(null, new object[] { HockeyClient.Current, sendAutomatically });
- #endif
+            Dispatcher.InvokeOnUIThread(async () =>
+            {
+                //await ((HockeyClient)HockeyClient.Current).SendCrashesAndDeleteAfterwardsAsync();
+                await (Task)_wp8Extensions.GetMethod("SendCrashesAsync").Invoke(null, new object[] { HockeyClient.Current, sendAutomatically });
+            });
+#endif
         }
 
-        public void CheckForUpdates() {
+        public void CheckForUpdates()
+        {
 #if (UNITY_WP8 && !UNITY_EDITOR)
-            //TODO implement extension method in wp8 sdk to allow for simple bool/string options instead of settings-object...
-            _wp8Extensions.GetMethod("CheckForUpdates").Invoke(null, new object[] { HockeyClient.Current, null });
+            Dispatcher.InvokeOnUIThread(() =>
+            {
+                //TODO implement extension method in wp8 sdk to allow for simple bool/string options instead of settings-object...
+                _wp8Extensions.GetMethod("CheckForUpdates").Invoke(null, new object[] { HockeyClient.Current, null });
+            });
 #endif
-
-         }
+        }
 
         public void HandleUnityLogException(string logString, string stackTrace) {
 #if (UNITY_WP8 && !UNITY_EDITOR)
-            var clientInternal = (HockeyClient)HockeyApp.HockeyClient.Current;
-            var crashData = clientInternal.CreateCrashData(logString, stackTrace);
-            
-            var crashId = Guid.NewGuid();
-            try
+            Dispatcher.InvokeOnAppThread(() =>
             {
-                IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
-                if (!store.DirectoryExists(HockeyUnityConstants.CrashDirectoryName))
-                {
-                    store.CreateDirectory(HockeyUnityConstants.CrashDirectoryName);
-                }
+                var clientInternal = (HockeyClient)HockeyApp.HockeyClient.Current;
+                var crashData = clientInternal.CreateCrashData(logString, stackTrace);
 
-                String filename = string.Format("{0}{1}.log", HockeyUnityConstants.CrashFilePrefix, crashId);
-                FileStream stream = store.CreateFile(Path.Combine(HockeyUnityConstants.CrashDirectoryName, filename));
-                crashData.Serialize(stream);
-                stream.Close();
-            }
-            catch
-            {
-                // Ignore all exceptions
-            }
+                var crashId = Guid.NewGuid();
+                try
+                {
+                    IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication();
+                    if (!store.DirectoryExists(HockeyUnityConstants.CrashDirectoryName))
+                    {
+                        store.CreateDirectory(HockeyUnityConstants.CrashDirectoryName);
+                    }
+
+                    String filename = string.Format("{0}{1}.log", HockeyUnityConstants.CrashFilePrefix, crashId);
+                    FileStream stream = store.CreateFile(Path.Combine(HockeyUnityConstants.CrashDirectoryName, filename));
+                    crashData.Serialize(stream);
+                    stream.Close();
+                }
+                catch
+                {
+                    throw;
+                    // Ignore all exceptions
+                }
+            });
 #endif
-        }
+                                                                                 }
 
         public void OpenFeedbackPage(string initialUsername = null, string initialEmail = null)
         {
 #if (UNITY_WP8 && !UNITY_EDITOR)
-            
-            HockeyApp.HockeyClient.Current.UpdateContactInfo(initialUsername, initialEmail);
-            Type.GetType("HockeyApp.HockeyClientWP8SLExtension,HockeyApp").GetMethod("ShowFeedback").Invoke(null, new object[] { HockeyClient.Current });
+            Dispatcher.InvokeOnUIThread(() =>
+            {
+                HockeyApp.HockeyClient.Current.UpdateContactInfo(initialUsername, initialEmail);
+                Type.GetType("HockeyApp.HockeyClientWP8SLExtension,HockeyApp").GetMethod("ShowFeedback").Invoke(null, new object[] { HockeyClient.Current });
+            });
 #endif
         } 
     }

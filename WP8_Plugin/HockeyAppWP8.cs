@@ -41,31 +41,43 @@ public class HockeyAppWP8 : MonoBehaviour {
 	public bool autoUpload = false;
 	public bool updateOnStart = false;
 
-	void Awake(){
+	void Awake() {
 		DontDestroyOnLoad(gameObject);
 		#if (UNITY_WP8 && !UNITY_EDITOR)
-		HockeyAppUnity.HockeyClientUnity.Current.Configure (appID, hockeyServer);
-		HockeyAppUnity.HockeyClientUnity.Current.HandleCrashes (autoUpload);
-		if(updateOnStart) {
-			HockeyAppUnity.HockeyClientUnity.Current.CheckForUpdates();
-		}
+		StartCoroutine(HockeyStart());
 		#endif
 	}
 
-	void OnEnable(){
-		
+	IEnumerator HockeyStart() {
+		HockeyAppUnity.HockeyClientUnity.Current.Configure (appID, hockeyServer);
+		yield return new object ();
+		HockeyAppUnity.HockeyClientUnity.Current.SendCrashes (autoUpload);
+		yield return new object();
+		if (updateOnStart) {
+			HockeyAppUnity.HockeyClientUnity.Current.CheckForUpdates ();
+			yield return new object();
+		}
+	}
+
+	void OnEnable() {
 		#if (UNITY_WP8 && !UNITY_EDITOR)
 		Application.RegisterLogCallback(OnHandleLogCallback);
 		#endif
 	}
-	
-	void OnDisable(){
+
+
+
+	void OnDisable() {
 		Application.RegisterLogCallback(null);
 	}
 
-	void OnDestroy(){
+
+
+	void OnDestroy() {
 		Application.RegisterLogCallback(null);
 	}
+
+
 
 	/// <summary>
 	/// Callback for handling log messages.
@@ -73,8 +85,9 @@ public class HockeyAppWP8 : MonoBehaviour {
 	/// <param name="logString">A string that contains the reason for the exception.</param>
 	/// <param name="stackTrace">The stacktrace for the exception.</param>
 	/// <param name="type">The type of the log message.</param>
-	public void OnHandleLogCallback(string logString, string stackTrace, LogType type){
-		#if (UNITY_ANDROID && !UNITY_EDITOR)
+	public void OnHandleLogCallback(string logString, string stackTrace, LogType type) {
+		#if (UNITY_WP8 && !UNITY_EDITOR)
+		HockeyAppUnity.HockeyClientUnity.Current.HandleUnityLogException(logString, stackTrace);
 		if(LogType.Assert != type && LogType.Exception != type)	
 		{	
 			return;	

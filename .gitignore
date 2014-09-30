@@ -15,7 +15,6 @@
 *.suo
 *.tlb
 *.tlh
-*.bak
 *.[Cc]ache
 *.ilk
 *.log

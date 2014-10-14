@@ -1,5 +1,4 @@
 HockeySDK for Unity (Windows)
-=========
 
 The official SDK for the HockeyApp service for Unity apps on Windows.
 
@@ -11,7 +10,6 @@ The next time the user starts the app, he is asked to send the crash data to the
 
 ## Supported Platforms
 As of now we support Unity WP8 builds, but we plan to add support for other Windows platforms soon.
-
 
 ## Features & Installation
 
@@ -32,3 +30,6 @@ In the ExampleProject folder you can see an example project.
 This is currently an alpha version. Please report any bugs/feature requests as Github tickets. Thanks!
 
 If you have any questions, problems or suggestions, please contact us at [support@hockeyapp.net](mailto:support@hockeyapp.net).
+
+## Release Notes
+Can be found in the corresponding subdirectories

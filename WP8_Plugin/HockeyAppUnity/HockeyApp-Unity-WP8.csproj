@@ -101,6 +101,7 @@
     <Compile Include="HockeyClientUnity.cs" />
     <Compile Include="HockeyUnityConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\windows_phone.png" />

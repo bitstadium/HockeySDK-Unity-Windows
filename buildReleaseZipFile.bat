@@ -1,5 +1,6 @@
 mkdir .\Release\Assets\Plugins\WP8\HockeyAppContent
 mkdir .\Release\Assets\Plugins\WP8\HockeyAppLib
+mkdir .\Release\Assets\Plugins\HockeyAppUnity-Scripts\
 mkdir .\Release\Assets\Editor
 
 copy /y .\WP8_Plugin\HockeyAppUnityWP8Fake\Bin\Release\HockeyAppUnityWP8.dll .\Release\Assets\Plugins\ 
@@ -16,8 +17,8 @@ copy /y .\WP8_Plugin\HockeyAppWP8.cs .\Release\Assets\Plugins\HockeyAppUnity-Scr
 copy /y .\WP8_Plugin\VersionWP8.txt .\Release\Assets\
 
 REM HockeySDK-Windows should be checked out in parallel directory
-copy /y ..\HockeySDK-Windows\bin\wp8\Release\HockeyApp.dll .\Release\Assets\Plugins\wp8\HockeyAppLib\HockeyApp.dll.bak
-copy /y ..\HockeySDK-Windows\bin\wp8\Release\HockeyApp.pdb .\Release\Assets\Plugins\wp8\HockeyAppLib\HockeyApp.pdb.bak
+copy /y ..\HockeySDK-Windows\bin\wp8\Release\HockeyApp.dll .\Release\Assets\Plugins\wp8\HockeyAppLib\HockeyApp.dll.ha
+copy /y ..\HockeySDK-Windows\bin\wp8\Release\HockeyApp.pdb .\Release\Assets\Plugins\wp8\HockeyAppLib\HockeyApp.pdb.ha
 
 copy /y ..\HockeySDK-Windows\Nuget\content\wp8\HockeyAppContent\*.png .\Release\Assets\Plugins\wp8\HockeyAppContent\
 

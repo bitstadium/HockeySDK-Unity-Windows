@@ -1,4 +1,8 @@
-﻿
-Initial alpha of the HockeySDK for Unity WP8
+﻿# HockeyApp Windows Phone 8 SL Plugin for Unity
 
-more documentation and beta-release coming soon
+[Getting Started](../)
+
+## Release Notes
+
+### Version 0.9.0-alpha01
+* Intitial release (based on HockeySDK.WP 2.2.0-beta2)

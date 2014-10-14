@@ -43,17 +43,16 @@ namespace HockeyAppUnity
             #endif
         }
 
+        public TaskWrapper SendCrashesAsync(bool sendAutomatically = false) {
  #if (UNITY_WP8 && !UNITY_EDITOR)
-        public void SendCrashes(bool sendAutomatically = false) {
- #else
-        public void SendCrashes(bool sendAutomatically = false) {
- #endif
- #if (UNITY_WP8 && !UNITY_EDITOR)
-            Dispatcher.InvokeOnUIThread(async () =>
-            {
-                //await ((HockeyClient)HockeyClient.Current).SendCrashesAndDeleteAfterwardsAsync();
-                await (Task)_wp8Extensions.GetMethod("SendCrashesAsync").Invoke(null, new object[] { HockeyClient.Current, sendAutomatically });
-            });
+            TaskWrapper taskWrapper = null;
+            //Dispatcher.InvokeOnUIThread(() =>
+            //{
+                taskWrapper = new TaskWrapper((Task)_wp8Extensions.GetMethod("SendCrashesAsync").Invoke(null, new object[] { HockeyClient.Current, sendAutomatically }));
+            //});
+            return taskWrapper;
+#else
+            return null;
 #endif
         }
 

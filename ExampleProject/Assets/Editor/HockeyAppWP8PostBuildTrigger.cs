@@ -60,7 +60,7 @@ public static class PostBuildTrigger
 				var originalLibDir = new DirectoryInfo(Path.Combine(appAssetsDir.FullName, WP8PluginPath + HockeyAppLibFolderName));
 				var projectContentDir = new DirectoryInfo(Path.Combine(projectDir.FullName, HockeyAppContentFolderName));
 				CopyAll(originalContentDir, projectContentDir, "*.png"); //copy HockeyAppContent to Project
-				CopyAll(originalLibDir, projectDir, "*.bak");
+				CopyAll(originalLibDir, projectDir, "*.ha");
 				MakeChangesToProjectFile(projectFile, originalContentDir.GetFiles("*.png"));
 			}
 			MakeChangesToAppXamlCs(appFile);
@@ -134,7 +134,7 @@ public static class PostBuildTrigger
 		foreach (FileInfo fi in source.GetFiles(pattern))
 		{
 			filecount++;
-			fi.CopyTo(Path.Combine(target.ToString(), fi.Name.Replace(".bak","")), true);
+			fi.CopyTo(Path.Combine(target.ToString(), fi.Name.Replace(".ha","")), true);
 		}
 		foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
 		{

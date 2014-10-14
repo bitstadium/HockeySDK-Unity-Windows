@@ -40,6 +40,7 @@ public class HockeyAppWP8 : MonoBehaviour {
 	public string hockeyServer = "https://rink.hockeyapp.net/";
 	public bool autoUpload = false;
 	public bool updateOnStart = false;
+	public bool updateOnResume = false;
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
@@ -49,50 +50,58 @@ public class HockeyAppWP8 : MonoBehaviour {
 	}
 
 	IEnumerator HockeyStart() {
+		#if (UNITY_WP8 && !UNITY_EDITOR)
 		HockeyAppUnity.HockeyClientUnity.Current.Configure (appID, hockeyServer);
-		yield return new object ();
-		HockeyAppUnity.HockeyClientUnity.Current.SendCrashes (autoUpload);
 		yield return new object();
+		var task = HockeyAppUnity.HockeyClientUnity.Current.SendCrashesAsync (autoUpload);
+		while (!task.IsCompleted) yield return new object();
 		if (updateOnStart) {
 			HockeyAppUnity.HockeyClientUnity.Current.CheckForUpdates ();
 			yield return new object();
 		}
-	}
-
-	void OnEnable() {
-		#if (UNITY_WP8 && !UNITY_EDITOR)
-		Application.RegisterLogCallback(OnHandleLogCallback);
 		#endif
+		yield return new object();
 	}
 
-
-
-	void OnDisable() {
-		Application.RegisterLogCallback(null);
-	}
-
-
-
-	void OnDestroy() {
-		Application.RegisterLogCallback(null);
-	}
-
-
-
-	/// <summary>
-	/// Callback for handling log messages.
-	/// </summary>
-	/// <param name="logString">A string that contains the reason for the exception.</param>
-	/// <param name="stackTrace">The stacktrace for the exception.</param>
-	/// <param name="type">The type of the log message.</param>
-	public void OnHandleLogCallback(string logString, string stackTrace, LogType type) {
+	private bool wasPaused = false;
+	void OnApplicationPause(bool pauseStatus) {
 		#if (UNITY_WP8 && !UNITY_EDITOR)
-		HockeyAppUnity.HockeyClientUnity.Current.HandleUnityLogException(logString, stackTrace);
-		if(LogType.Assert != type && LogType.Exception != type)	
+		if(updateOnResume && !pauseStatus && wasPaused) {
+			wasPaused = false;
+			HockeyAppUnity.HockeyClientUnity.Current.CheckForUpdates (); } 
+		if(pauseStatus) {
+			wasPaused = true;
+		}
+		#endif
+}
+
+void OnEnable() {
+	#if (UNITY_WP8 && !UNITY_EDITOR)
+	Application.RegisterLogCallback(OnHandleLogCallback);
+	#endif
+}
+
+void OnDisable() {
+	Application.RegisterLogCallback(null);
+}
+
+void OnDestroy() {
+	Application.RegisterLogCallback(null);
+}
+
+/// <summary>
+/// Callback for handling log messages.
+/// </summary>
+/// <param name="logString">A string that contains the reason for the exception.</param>
+/// <param name="stackTrace">The stacktrace for the exception.</param>
+/// <param name="type">The type of the log message.</param>
+	public void OnHandleLogCallback(string logString, string stackTrace, LogType type) {
+	#if (UNITY_WP8 && !UNITY_EDITOR)
+		if(LogType.Assert != type && LogType.Exception != type  && LogType.Error != type )	
 		{	
 			return;	
 		}	
 		HockeyAppUnity.HockeyClientUnity.Current.HandleUnityLogException(logString, stackTrace);
-		#endif
+	#endif
 	}
 }

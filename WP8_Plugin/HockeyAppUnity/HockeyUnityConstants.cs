@@ -10,7 +10,7 @@ namespace HockeyApp
     {
 
         internal const string SdkName = "HockeySDKUnityWP8";
-        internal const string SdkVersion = "0.9.0-alpha";
+        internal const string SdkVersion = "0.9.0-alpha02";
 
         internal const string CrashDirectoryName = "HockeyCrashes";
         internal const string CrashFilePrefix = "crashinfo_";

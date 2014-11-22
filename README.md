@@ -26,7 +26,7 @@ As of now we support Unity WP8 builds, but we plan to add support for other Wind
 
 In the ExampleProject folder you can see an example project.
 
-## Licenses
+## License
 
 The Hockey SDK is provided under the following license:
 

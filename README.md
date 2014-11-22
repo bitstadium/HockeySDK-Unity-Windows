@@ -1,5 +1,3 @@
-HockeySDK for Unity (Windows)
-
 The official SDK for the HockeyApp service for Unity apps on Windows.
 
 ## Introduction

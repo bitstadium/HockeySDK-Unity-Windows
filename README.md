@@ -19,10 +19,20 @@ As of now we support Unity WP8 builds, but we plan to add support for other Wind
 4. Create a new empty GameObject
 5. Add a ScriptComponent to the GameObject. Choose HockeyAppWP8Script
 6. in the component view add your HockeyApp AppID and tick the relevant boxes.
-7. Build your project for Windows Phone 8 in the Unity Editor
-8. In the created Solution check the box for ID_CAP_WEBBROWSERCOMPONENT in the WMAppManifest.xml under capabilities (needed to display releasenotes for app updates)
+7. If you are building xour app with Unity 5, you need to do some additional [adjustments (Unity 5)](#Unity 5)
+8. Build your project for Windows Phone 8 in the Unity Editor
+9. In the created Solution check the box for ID_CAP_WEBBROWSERCOMPONENT in the WMAppManifest.xml under capabilities (needed to display releasenotes for app updates)
 
 In the ExampleProject folder you can see an example project.
+
+### <a name="Unity 5">Unity 5</a>
+If you are using Unity 5, you need to do some adjustments in order to be able to build the project:
+
+1. Select the **Assets/Plugins/HockeyAppUnityWP8.dll** inside the project window
+2. In the inspector pane, only check the **WSA** platform and apply those changes
+3. Select the **Assets/Plugins/WP8/HockeyAppUnityWP8.dll** inside the project window
+4. In the inspector pane, only check the **WS8** platform
+5. Check **Don't process** and in the Placeholder drop down, navigate to **Assets/Plugins/HockeyAppUnityWP8.dll**.
 
 ## License
 

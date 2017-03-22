@@ -7,8 +7,7 @@ When your app crashes, a file with basic information about the environment (devi
 The next time the user starts the app, he is asked to send the crash data to the developer. If he confirms the dialog, the crash log is sent to HockeyApp and then the file deleted from the device.
 
 ## Supported Platforms
-As of now we support Unity WP8 builds, but we plan to add support for other Windows platforms soon.
-
+As of now we support Unity WP8 builds.
 ## Features & Installation
 
 ### Windows Phone 8
